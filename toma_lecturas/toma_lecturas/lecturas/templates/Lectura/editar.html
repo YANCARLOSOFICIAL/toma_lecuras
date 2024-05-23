@@ -1,0 +1,65 @@
+<!-- editar.html -->
+
+{% extends 'layout.html' %}
+{% block titulo %} EDITAR LECTURA {% endblock %}
+{% block section %}
+<div class="card text-start">
+    <div class="card-body">
+        <h4 class="card-title">Editar Lectura</h4>
+        <div class="mb-3">
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Suscriptor Micromedidor:</label>
+                    <select name="suscriptor_micromedidor" class="form-control">
+                        {% for suscriptor_micromedidor in suscriptores_micromedidores %}
+                            <option value="{{ suscriptor_micromedidor.id }}" {% if suscriptor_micromedidor.id == lectura.suscriptor_micromedidor.id %} selected {% endif %}>
+                                {{ suscriptor_micromedidor.suscriptor.primer_nombre }} {{ suscriptor_micromedidor.suscriptor.segundo_nombre }} {{ suscriptor_micromedidor.suscriptor.primer_apellido }} {{ suscriptor_micromedidor.micromedidor.medidor }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Registro de Consumo:</label>
+                    <input type="text" name="registro_consumo" class="form-control" value="{{ lectura.registro_consumo }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fecha de Lectura:</label>
+                    <input type="datetime-local" name="FechaLectura" class="form-control" value="{{ lectura.FechaLectura|date:'Y-m-d\TH:i' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Observaciones:</label>
+                    <textarea name="Observaciones" class="form-control">{{ lectura.Observaciones }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Lectura:</label>
+                    <select name="tipo_lectura" class="form-control">
+                        {% for tipo, label in form.tipo_lectura.field.choices %}
+                            <option value="{{ tipo }}" {% if tipo == lectura.tipo_lectura %} selected {% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Estado del Micromedidor:</label>
+                    <select name="estado_micromedidor" class="form-control">
+                        {% for estado, label in form.estado_micromedidor.field.choices %}
+                            <option value="{{ estado }}" {% if estado == lectura.estado_micromedidor %} selected {% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mes de Lectura:</label>
+                    <select name="Mes_lectura" class="form-control">
+                        {% for mes, label in form.Mes_lectura.field.choices %}
+                            <option value="{{ mes }}" {% if mes == lectura.Mes_lectura %} selected {% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
